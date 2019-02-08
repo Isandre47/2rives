@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="navbar-brand" href="{{ path('emission_index') }}">Administrateur</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('emission_index') }}">Gérer les émissions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('user_index') }}">Gérer les utilisateurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('category_index') }}">Gérer les catégories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('show_daily') }}">Voir les vidéos daily</a>
+            </li>
+        </ul>
+    </div>
+</nav>
