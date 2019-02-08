@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Emission{% endblock %}
+
+{% block body %}
+    <h1>Edit Emission</h1>
+    <div class="row">
+        <div class="col-10 offset-1">
+            {{ include('emission/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+    </div>
+
+    <a href="{{ path('emission_index') }}">back to list</a>
+
+    {{ include('emission/_delete_form.html.twig') }}
+{% endblock %}

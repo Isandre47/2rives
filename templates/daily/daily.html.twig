@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Daily index{% endblock %}
+
+{% block body %}
+    <h1>Daily index</h1>
+    {{ dump(idone) }}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Screename</th>
+                <th>Language</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ id_user.id }}</td>
+                <td>{{ id_user.username }}</td>
+                <td>{{ id_user.screenname }}</td>
+                <td>{{ id_user.language }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Catégorie</th>
+            <th>Lien</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ dump(video) }}
+
+        {% for emission in video.list %}
+            <tr>
+                <td>{{ emission.id }}</td>
+                <td>{{ emission.title }}</td>
+                <td>
+                    {% for tag in emission.tag %}
+                    {{ tag }}
+                    {% endfor %}
+                </td>
+                <td>{{ emission.embed_url }}<br>
+                    <embed src="{{ emission.embed_url }}" type="" height="150px" width="150px">
+                </td>
+                <td>
+                    <a href="{{ path('emission_show', {'id': emission.id}) }}">Voir</a>
+                    <a href="{{ path('emission_edit', {'id': emission.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('emission_new') }}">Create new</a>
+{% endblock %}

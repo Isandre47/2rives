@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Emission{% endblock %}
+
+{% block body %}
+    <h1>Create new Emission</h1>
+
+    {{ include('emission/_form.html.twig') }}
+
+    <a href="{{ path('emission_index') }}">back to list</a>
+{% endblock %}
