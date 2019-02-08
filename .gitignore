@@ -5,6 +5,8 @@
 /.env.*.local
 /public/bundles/
 /var/
+/.env
+apidaily
 /vendor/
 ###< symfony/framework-bundle ###
 
