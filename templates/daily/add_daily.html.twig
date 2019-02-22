@@ -1,13 +1,29 @@
-{% extends '../base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Edit daily{% endblock %}
 
+{% block stylesheet %}
+
+
+{% endblock %}
+
 {% block body %}
     <h1>Edit daily</h1>
-
+    {{ dump(text) }}
     {{ form_start(form) }}
+    {#<span class="btn btn-success fileinput-button">#}
+        {#<i class="glyphicon glyphicon-plus"></i>#}
+        {#<span>Add files...</span>#}
+        {#<!-- The file input field used as target for the file upload widget -->#}
+        {#<input id="fileupload" type="file" name="files[]" multiple>#}
+    {#</span>#}
     {{ form_widget(form) }}
+    {{ form_row(form.file) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascipt %}
 
 {% endblock %}

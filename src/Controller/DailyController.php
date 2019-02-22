@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class DailyController extends AbstractController
 {
 
@@ -90,15 +91,50 @@ class DailyController extends AbstractController
             )
         );
 
+        $pipi = $api->get(
+            "/file/upload"
+        );
+        echo 'api file upload';
+        $apiurl = ($pipi['upload_url']);
+        var_dump($pipi['upload_url']);
         $form = $this->createForm(DailyType::class);
         $form->handleRequest($request);
+        $lien = '';
+        $titre = '';
+        echo 'api';
+
+        var_dump($api);
+
 
         if ($form->isSubmitted())
         {
-            dd($form);
+
+            $file = $form['file']->getData();
+            $title = $form['title']->getData();
+            $resume = $form['resume']->getData();
+
+            echo 'file';
+            var_dump($file);
+            $data = $form->getData('pathName');
+            echo 'data';
+            var_dump($data);
+
+            $url = $api->uploadFile($file);
+            echo 'url';
+            var_dump($url);
+            $result = $api->post(
+                '/me/videos',
+                array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
+            );
+            var_dump($result);
+            $list = $this->connection()->get("/me/videos?limit=20",
+                array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html','updated_time'))
+            );
+            return $this->render('emission/index_daily.html.twig', ['list'=> $list, "text" => $result]);
         }
 
-            return $this->render('daily/add_daily.html.twig', ['form'=> $form->createView()]);
+
+            return $this->render('daily/add_daily.html.twig', ['form'=> $form->createView(), "text" => "encore rien envoyé"]);
         }
 
 //    }
@@ -110,7 +146,7 @@ class DailyController extends AbstractController
         public function showAll(): Response
         {
             $list = $this->connection()->get("/me/videos?limit=20",
-                array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html'))
+                array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html','updated_time'))
             );
 
             return $this->render('emission/index_daily.html.twig', ['list'=> $list]);

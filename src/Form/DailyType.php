@@ -19,7 +19,7 @@ class DailyType extends AbstractType
         $builder
             ->add('title')
             ->add('resume')
-            ->add('file')
+            ->add('file', FileType::class)
             ;
     }
 

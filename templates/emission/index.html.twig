@@ -1,14 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Emission index{% endblock %}
 
 {% block body %}
-    <h1>Emission index</h1>
+    <div class="container">
+        <h1>Gérer les émissions</h1>
+        <br>
 
-    <table class="table">
-        <thead>
+        <button><a href="{{ path('ajout_d') }}">Ajouter une émission</a></button>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                {#<th>Id</th>#}
+                <th>Id</th>
                 <th>Titre</th>
                 <th>Resume</th>
                 <th>Catégorie</th>
@@ -17,32 +20,34 @@
                 {#<th>Lien</th>#}
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {#{{ dump(emissions) }}#}
-        {% for emission in emissions %}
-            <tr>
-                {#<td>{{ emission.id }}</td>#}
-                <td>{{ emission.title }}</td>
-                <td>{{ emission.resume }}</td>
-                <td>{{ emission.category.type }}</td>
-                <td>
-                    <embed src="{{ emission.lien }}" type="" height="150px" width="150px">
-                </td>
-                <td><img src="/medias/{{ emission.medias }}" alt=""></td>
-                {#<td>{{ emission.lien }}</td>#}
-                <td>
-                    <a href="{{ path('emission_show', {'id': emission.id}) }}">Voir</a>
-                    <a href="{{ path('emission_edit', {'id': emission.id}) }}">Editer</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {#{{ dump(emissions) }}#}
+            {#{{ dump(list) }}#}
+            {% for emission in emissions %}
+                <tr>
+                    <td>{{ emission.medias }}</td>
+                    <td>{{ emission.title }}</td>
+                    <td>{{ emission.resume }}</td>
+                    <td>{{ emission.category.type }}</td>
+                    <td>
+                        <embed src="{{ emission.lien }}" type="" height="150px" width="150px">
+                    </td>
+                    {#<td><img src="/medias/{{ emission.medias }}" alt=""></td>#}
+                    {#<td>{{ emission.lien }}</td>#}
+                    <td>
+                        <a href="{{ path('emission_show', {'id': emission.id}) }}">Voir</a>
+                        <a href="{{ path('emission_edit', {'id': emission.id}) }}">Editer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('emission_new') }}">Create new</a>
+    </div>
+
 {% endblock %}

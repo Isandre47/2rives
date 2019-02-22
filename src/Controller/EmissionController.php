@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Emission;
 use App\Form\EmissionType;
 use App\Repository\EmissionRepository;
+use App\Services\Daily;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +19,14 @@ class EmissionController extends AbstractController
     /**
      * @Route("/", name="emission_index", methods={"GET"})
      */
-    public function index(EmissionRepository $emissionRepository): Response
+    public function index(EmissionRepository $emissionRepository, Daily $daily): Response
     {
+        $list = $daily->connection()->get("/me/videos?limit=40",
+            array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html','updated_time')));
         $emmission = $emissionRepository->allWithCategory();
         return $this->render('emission/index.html.twig', [
             'emissions' => $emmission,
+            'list' => $list,
         ]);
     }
 
@@ -35,7 +39,8 @@ class EmissionController extends AbstractController
         $form = $this->createForm(EmissionType::class, $emission);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+//            dd($_FILES);
 //            $file = $emission->getMedias();
 //            $fileName = md5(uniqid()).'.'.$file->guessExtension();
 //            $file->move($this->getParameter('upload_medias_directory'), $fileName);
@@ -53,6 +58,97 @@ class EmissionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/add", name="ajout_d", methods={"GET|POST"})
+     */
+    public function addDaily(Request $request, Daily $daily): Response
+    {
+        $emission = new Emission();
+        $api = new \Dailymotion();
+        $api->setGrantType(
+            \Dailymotion::GRANT_TYPE_PASSWORD,
+            $_ENV['API_KEY'],
+            $_ENV['API_SECRET'],
+            array(),
+            array(
+                'username' => $_ENV['username'],
+                'password' => $_ENV['password']
+            )
+        );
+
+
+
+        $pipi = $api->get(
+            "/file/upload"
+        );
+
+//        echo 'api file upload';
+        $apiurl = ($pipi['upload_url']);
+//        var_dump($pipi['upload_url']);
+        $form = $this->createForm(EmissionType::class, $emission);
+//        $form->handleRequest($request);
+        $lien = '';
+        $titre = '';
+//        echo 'api';
+//
+//        var_dump($api);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted())
+        {
+//            dd($form);
+            $file = $form['lien']->getData();
+            $title = $form['title']->getData();
+            $resume = $form['resume']->getData();
+//
+//            echo 'file';
+//            var_dump($file);
+            $data = $form->getData('pathName');
+//            echo 'data';
+//            var_dump($data);
+
+            $url = $api->uploadFile($file);
+//            echo 'url';
+//            var_dump($url);
+//            $result = $api->post(
+//                '/me/videos',
+//                array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
+//            );
+
+
+            $list = $daily->connection()->get("/me/videos?limit=1",
+                array('fields' => array('embed_url','id'))
+            );
+
+//            dd($request);
+//            dd($list);
+//            dd($emission);
+
+            foreach ($list['list'] as $value=>$key){
+                $lien =  $key['embed_url'];
+                $idmedias = $key['id'];
+            }
+
+            $emission->setLien($lien);
+            $emission->setMedias($idmedias);
+            dd($emission);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($emission);
+            $entityManager->flush();
+
+
+//            var_dump($result);
+
+
+            return $this->redirectToRoute('emission_index', ['list'=> $list]);
+        }
+
+
+        return $this->render('emission/new.html.twig', ['form'=> $form->createView(), "text" => "encore rien envoyé"]);
+    }
+
 
     /**
      * @Route("/{id}", name="emission_show", methods={"GET"})
@@ -104,8 +200,10 @@ class EmissionController extends AbstractController
     /**
      * @Route("/{id}", name="emission_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Emission $emission): Response
+    public function delete(Request $request, Emission $emission, Daily $daily): Response
     {
+        $daily->connection()->delete('video/id');
+        dd($emission);
         if ($this->isCsrfTokenValid('delete'.$emission->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($emission);

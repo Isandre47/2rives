@@ -1,0 +1,17 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Admin index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Dashboard</h1>
+    <table class="table">
+        <th>Nombre d'émissions</th>
+        <th>Nombre de catégories</th>
+        <th>Nombre d'utilisateurs</th>
+        <tr>
+            <td>{{ emissions|length }}</td>
+            <td>{{ categories|length }}</td>
+            <td>{{ user|length }}</td>
+        </tr>
+    </table>
+{% endblock %}

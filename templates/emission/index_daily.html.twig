@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Emission index{% endblock %}
 
@@ -13,6 +13,7 @@
             <th>Resume</th>
             <th>Vignette</th>
             <th>Tags</th>
+            <th>date</th>
             {#<th>Images</th>#}
             {#<th>Lien</th>#}
             <th>actions</th>
@@ -34,7 +35,7 @@
                         {{ tag }}
                     {% endfor %}
                 </td>
-                {#<td>{{ emission.lien }}</td>#}
+                <td>{{ emission.updated_time }}</td>
                 <td>
                     <a href="{{ path('emission_show', {'id': emission.id}) }}">Voir</a>
                     <a href="{{ path('emission_edit', {'id': emission.id}) }}">Editer</a>

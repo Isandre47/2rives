@@ -2,13 +2,16 @@
 
 namespace App\Form;
 
+use App\Controller\DailyController;
 use App\Entity\Category;
 use App\Entity\Emission;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -34,39 +37,9 @@ class EmissionType extends AbstractType
                 ],
                 'label' => 'Résumé'
             ])
-//            ->add('medias')
-//            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-//                $medias = $event->getData()->getMedias();
-//                $form = $event->getForm();
-//                $form->add('medias', FileType::class, array(
-//                    'data_class' => null,
-//                    'attr' => array(
-//                        'class'=> ""
-//                    ),
-//                    'label' => 'Vous souhaitez changer la photo?',
-//                    'required' => false,
-//                    'constraints' => empty($medias) ?
-//                        [new Assert\NotBlank()] :
-//                        []
-//                ));
-//
-//            })
-//            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event){
-//                $medias = $event->getData()->getMedias();
-//                $form = $event->getForm();
-//                $form->add('medias', FileType::class, array(
-//                    'data_class' => null,
-//                    'attr' => array(
-//                        'class' => ""
-//                    ),
-//                    'label' => 'Vous souhaitez changer la vidéo ?',
-//                    'required' => false,
-//                    'constraints' => empty($medias) ?
-//                        [new Assert\NotBlank()] :
-//                        []
-//                ));
-//            })
-            ->add('lien', TextType::class, [
+
+            ->add('lien', FileType::class, [
+                'data_class' => null,
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => "Lien"
