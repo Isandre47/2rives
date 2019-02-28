@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\Emission;
+use App\Repository\CategoryRepository;
 use App\Repository\EmissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +18,7 @@ class VisitorController extends AbstractController
     public function index(EmissionRepository $emissionRepository):  Response
     {
         $emmission = $emissionRepository->allWithCategory();
+
         return $this->render('visitor/index.html.twig', [
             'controller_name' => 'VisitorController',
             'emission' => $emmission,
@@ -22,16 +26,37 @@ class VisitorController extends AbstractController
     }
 
     /**
-     * @Route("/replay", name="replay")
+     * @Route("/replay", name="replay_all")
      */
-    public function indexReplay(EmissionRepository $emissionRepository):  Response
+    public function indexReplay(EmissionRepository $emissionRepository, CategoryRepository $categoryRepository):  Response
     {
         $emmission = $emissionRepository->allWithCategory();
+        $category = $categoryRepository->allWithEmission();
+//        dd($emmission);
         return $this->render('visitor/replay.html.twig', [
             'controller_name' => 'VisitorController',
             'emission' => $emmission,
+            'category' => $category,
         ]);
     }
+
+
+    /**
+     * @Route("/replay/{id}", name="replay_id")
+     */
+    public function indexReplayByCat(EmissionRepository $emissionRepository, CategoryRepository $categoryRepository, $id):  Response
+    {
+        $emmission = $emissionRepository->byCategory($id);
+        $category = $categoryRepository->allWithEmission();
+//        dd($emmission);
+        return $this->render('visitor/replayid.html.twig', [
+            'controller_name' => 'VisitorController',
+            'emission' => $emmission,
+            'category' => $category,
+        ]);
+    }
+
+
 
     /**
      * @Route("/live", name="live")

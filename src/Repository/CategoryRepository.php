@@ -19,6 +19,24 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+
+
+    /**
+     * @return Category[] Returns an array of Category objects
+     */
+    public function allWithEmission()
+    {
+        return $this->createQueryBuilder('p')
+            // p.category refers to the "category" property on product
+            ->innerJoin('p.id_category', 'c')
+            // selects all the category data to avoid the query
+            ->addSelect('c')
+            ->andWhere('p.id = c.category')
+//            ->orderBy('p.type', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

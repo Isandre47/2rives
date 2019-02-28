@@ -66,21 +66,10 @@ class EmissionController extends AbstractController
     public function addDaily(Request $request, Daily $daily): Response
     {
         $emission = new Emission();
-        $api = new \Dailymotion();
-        $api->setGrantType(
-            \Dailymotion::GRANT_TYPE_PASSWORD,
-            $_ENV['API_KEY'],
-            $_ENV['API_SECRET'],
-            array(),
-            array(
-                'username' => $_ENV['username'],
-                'password' => $_ENV['password']
-            )
-        );
 
 
 
-        $pipi = $api->get(
+        $pipi = $daily->connection()->get(
             "/file/upload"
         );
 
@@ -109,13 +98,13 @@ class EmissionController extends AbstractController
 //            echo 'data';
 //            var_dump($data);
 
-            $url = $api->uploadFile($file);
+            $url = $daily->connection()->uploadFile($file);
 //            echo 'url';
 //            var_dump($url);
-//            $result = $api->post(
-//                '/me/videos',
-//                array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
-//            );
+            $result = $daily->connection()->post(
+                '/me/videos',
+                array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
+            );
 
 
             $list = $daily->connection()->get("/me/videos?limit=1",
@@ -133,7 +122,7 @@ class EmissionController extends AbstractController
 
             $emission->setLien($lien);
             $emission->setMedias($idmedias);
-            dd($emission);
+//            dd($emission);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($emission);
             $entityManager->flush();
@@ -198,16 +187,20 @@ class EmissionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="emission_delete", methods={"DELETE"})
+     * @Route("/{id}", name="emission_delete")
      */
-    public function delete(Request $request, Emission $emission, Daily $daily): Response
+    public function delete(Request $request, Emission $emission, Daily $daily, $id): Response
     {
-        $daily->connection()->delete('video/id');
-        dd($emission);
+//        dd($id);
+
+
         if ($this->isCsrfTokenValid('delete'.$emission->getId(), $request->request->get('_token'))) {
+//            dd($emission);
+            $daily->connection()->delete('/video/'. $emission->getMedias());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($emission);
             $entityManager->flush();
+            return $this->redirectToRoute('emission_index');
         }
 
         return $this->redirectToRoute('emission_index');

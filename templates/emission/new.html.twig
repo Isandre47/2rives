@@ -3,9 +3,12 @@
 {% block title %}New Emission{% endblock %}
 
 {% block body %}
-    <h1>Ajouter une nouvelle émission</h1>
+    <div class="container">
+        <h1>Ajouter une nouvelle émission</h1>
 
-    {{ include('emission/_form.html.twig') }}
+        {{ include('emission/_form.html.twig') }}
 
-    <a href="{{ path('emission_index') }}">Retour à la liste</a>
+        <a href="{{ path('emission_index') }}">Retour à la liste</a>
+    </div>
+
 {% endblock %}

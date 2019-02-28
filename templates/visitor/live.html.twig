@@ -2,6 +2,10 @@
 
 {% block title %}Hello VisitorController!{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styletv.css">
+{% endblock %}
 {% block body %}
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -22,6 +26,8 @@
                 <tr>
                     <td>
                         <iframe frameborder="0" width="720" height="270" src="https://www.dailymotion.com/embed/video/x3b68jn?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>
+                        <video  width="854" height="480" controls="controls" autobuffer="true" src="http://www.2rives.tv/Backoffice/destination/videos/files/cip%20s01e178%20je%20joue%20oui%20mais%20japprends%20achat.m4v">vidéo</video>
+                        {#<video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg"><source id="video_src"  type="video/mp4" /></video>#}
 
                     </td>
                 </tr>

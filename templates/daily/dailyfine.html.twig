@@ -1,0 +1,126 @@
+{% extends 'daily/baseup.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h2>Upload file</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form id="upload-form">
+                <div class="form-group">
+                    <label for="file">File</label> <input id="upload_file" type="file" name="file">
+                    <input class="btn btn-primary" type="submit">
+                </div>
+            </form>
+            {{ form_start(form, {'attr': {'id': 'upload-form'}}) }}
+            {#<span class="btn btn-success fileinput-button">#}
+            {#<i class="glyphicon glyphicon-plus"></i>#}
+            {#<span>Add files...</span>#}
+            {#<!-- The file input field used as target for the file upload widget -->#}
+            {#<input id="fileupload" type="file" name="files[]" multiple>#}
+            {#</span>#}
+            {{ form_widget(form) }}
+            {{ form_row(form.file) }}
+            {{ form_widget(form.file, {'attr' : {'id' : 'Description_photo'} }) }}
+            <input class="btn btn-primary" type="submit">
+            {{ form_end(form) }}
+        </div>
+
+        </div>
+    </div>
+    <div class="row" id="progress-box" style="display: none;">
+        <div class="col">
+            <h3>Progress</h3>
+            <div class="progress">
+                <div id="progress-value" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="errors-box" style="display: none;">
+        <div class="col">
+            <div class="alert alert-danger" id="errors"></div>
+        </div>
+    </div>
+    <div class="row" id="upload-complete-box" style="display: none;">
+        <div class="col">
+            <div class="alert alert-success" id="upload-complete"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    <style>
+        .row {
+            margin: 15px 0;
+        }
+    </style>
+{%- endblock -%}
+{%- block javascripts -%}
+    {{ parent() }}
+    <script>
+        $(function () {
+            document.getElementById('progress-value').style = "width: 0%";
+            document.getElementById('upload-form').addEventListener('submit', onSubmit);
+
+            function onSubmit(event) {
+                event.preventDefault();
+                resetAlertBox();
+
+                let formData = new FormData();
+                formData.append("upload[toto]", document.getElementById("upload_file").files[0]);
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "/upload");
+                xhr.addEventListener('load', onRequestComplete, false);
+                xhr.upload.addEventListener("load", onUploadComplete, false);
+                xhr.upload.addEventListener("progress", onUploadProgress, false);
+                xhr.send(formData);
+            }
+
+            function onUploadProgress(event) {
+                if (event.lengthComputable) {
+                    $('#progress-box').css('display', 'block');
+                    let percentComplete = event.loaded / event.total;
+                    document.getElementById('progress-value').style = "width: "+parseFloat(percentComplete*100).toFixed(2)+"%";
+                }
+            }
+
+            function onUploadComplete() {
+                $('#upload-complete-box').css('display', 'block');
+            }
+
+            function onRequestComplete(event) {
+                if (201 === event.explicitOriginalTarget.status){
+                    let response = JSON.parse(event.explicitOriginalTarget.response);
+                    $('#upload-complete').append('Upload complete: <a href="/emission">download key </a>');
+
+                    return;
+                }
+
+                let errors = JSON.parse(event.explicitOriginalTarget.response);
+                $('#errors-box').css('display', 'block');
+                $('#upload-complete-box').css('display', 'none');
+                let list = document.createElement('ul');
+                for(let i = 0; i < errors.length; i++) {
+                    let item = document.createElement('li');
+                    item.appendChild(document.createTextNode(errors[i]));
+                    list.appendChild(item);
+                }
+                let title = document.createElement('span');
+                title.textContent = "Error found";
+                document.getElementById('errors').appendChild(title);
+                document.getElementById('errors').appendChild(list);
+            }
+
+            function resetAlertBox() {
+                $('#errors-box').css('display', 'none');
+                $('#upload-complete-box').css('display', 'none');
+                $('#progress-box').css('display', 'none');
+            }
+        });
+    </script>
+{%- endblock -%}

@@ -30,6 +30,38 @@ class EmissionRepository extends ServiceEntityRepository
             // selects all the category data to avoid the query
             ->addSelect('c')
             ->andWhere('p.category = c.id')
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    /**
+    * @return Emission[] Returns an array of Emission objects
+    */
+    public function allByCategory()
+    {
+        return $this->createQueryBuilder('p')
+            // p.category refers to the "category" property on product
+            ->innerJoin('p.category', 'c')
+            // selects all the category data to avoid the query
+            ->addSelect('c')
+            ->andWhere('p.category = c.id')
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+    * @return Emission[] Returns an array of Emission objects
+    */
+    public function byCategory($id)
+    {
+        return $this->createQueryBuilder('p')
+            // p.category refers to the "category" property on product
+            ->innerJoin('p.category', 'c')
+            // selects all the category data to avoid the query
+            ->addSelect('c')
+            ->andWhere("p.category = $id")
+            ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getResult();
     }

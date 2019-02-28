@@ -9,7 +9,10 @@
 namespace App\Controller;
 
 use App\Form\DailyType;
+use App\Form\UploadType;
+use App\Services\Daily;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,21 +80,10 @@ class DailyController extends AbstractController
     /**
      * @Route("/daily/add", name="add_daily", methods={"GET|POST"})
      */
-    public function addDaily(Request $request): Response
+    public function addDaily(Request $request, Daily $daily): Response
     {
-        $api = new \Dailymotion();
-        $api->setGrantType(
-            \Dailymotion::GRANT_TYPE_PASSWORD,
-            $_ENV['API_KEY'],
-            $_ENV['API_SECRET'],
-            array(),
-            array(
-                'username' => $_ENV['username'],
-                'password' => $_ENV['password']
-            )
-        );
 
-        $pipi = $api->get(
+        $pipi = $daily->connection()->get(
             "/file/upload"
         );
         echo 'api file upload';
@@ -103,12 +95,12 @@ class DailyController extends AbstractController
         $titre = '';
         echo 'api';
 
-        var_dump($api);
+        var_dump($pipi);
 
 
         if ($form->isSubmitted())
         {
-
+            dd($form->getErrors());
             $file = $form['file']->getData();
             $title = $form['title']->getData();
             $resume = $form['resume']->getData();
@@ -119,10 +111,10 @@ class DailyController extends AbstractController
             echo 'data';
             var_dump($data);
 
-            $url = $api->uploadFile($file);
+            $url = $daily->connection()->uploadFile($file);
             echo 'url';
             var_dump($url);
-            $result = $api->post(
+            $result = $daily->connection()->post(
                 '/me/videos',
                 array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
             );
@@ -134,7 +126,7 @@ class DailyController extends AbstractController
         }
 
 
-            return $this->render('daily/add_daily.html.twig', ['form'=> $form->createView(), "text" => "encore rien envoyé"]);
+            return $this->render('daily/dailyfine.html.twig', ['form'=> $form->createView(), "text" => "encore rien envoyé"]);
         }
 
 //    }
@@ -142,13 +134,139 @@ class DailyController extends AbstractController
     /**
     * @Route("/daily/show", name="show_daily", methods={"GET"})
     */
+    public function showAll(): Response
+    {
+        $list = $this->connection()->get("/me/videos?limit=20",
+            array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html','updated_time'))
+        );
 
-        public function showAll(): Response
+        return $this->render('emission/index_daily.html.twig', ['list'=> $list]);
+    }
+
+
+    /**
+     * @Route("/homepage", name="homepage", methods={"GET"})
+     */
+    public function indexAction()
+    {
+        $form = $this->createForm(UploadType::class);
+        return $this->render('daily/upload.html.twig', [ 'form' => $form->createView()]);
+    }
+
+
+    /**
+     * @Route("/upload", name="upload", methods={"POST"})
+     */
+    public function uploadAction(Request $request): Response
+    {
+
+        function decode_chunk($data) {
+            $data = explode(';base64,', $data);
+
+            if (!is_array($data) || !isset($data[1])) {
+                return false;
+            }
+
+            $data = base64_decode($data[1]);
+            if (!$data) {
+                return false;
+            }
+
+            return $data;
+        }
+
+// $file_path: fichier cible: garde le même nom de fichier, dans le dossier uploads
+        $file_path = 'upload/' . $_POST['file'];
+        $file_data = decode_chunk($_POST['file_data']);
+
+        if (false === $file_data) {
+            echo "error";
+        }
+
+        /* on ajoute le segment de données qu'on vient de recevoir
+         * au fichier qu'on est en train de ré-assembler: */
+        file_put_contents($file_path, $file_data, FILE_APPEND);
+
+// nécessaire pour que JavaScript considère que la requête s'est bien passée:
+        return JsonResponse::create([]);
+    }
+
+
+    /**
+     * @Route("/bigfile", name="bigfile", methods={"GET|POST"})
+     */
+    public function bigDaily(Request $request, Daily $daily): Response
+    {
+        $emission = new Emission();
+
+        $pipi = $daily->connection()->get(
+            "/file/upload"
+        );
+
+//        echo 'api file upload';
+        $apiurl = ($pipi['upload_url']);
+//        var_dump($pipi['upload_url']);
+        $form = $this->createForm(EmissionType::class, $emission);
+//        $form->handleRequest($request);
+        $lien = '';
+        $titre = '';
+//        echo 'api';
+//
+//        var_dump($api);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted())
         {
-            $list = $this->connection()->get("/me/videos?limit=20",
-                array('fields' => array('id', 'title', 'owner', 'embed_url', 'tag', 'embed_html','updated_time'))
+//            dd($form);
+            $file = $form['lien']->getData();
+            $title = $form['title']->getData();
+            $resume = $form['resume']->getData();
+//
+//            echo 'file';
+//            var_dump($file);
+            $data = $form->getData('pathName');
+//            echo 'data';
+//            var_dump($data);
+
+//            $url = $daily->connection()->uploadFile($file);
+//            echo 'url';
+//            var_dump($url);
+//            $result = $daily->connection()->post(
+//                '/me/videos',
+//                array('url' => $url, 'title' => $title, 'channel'=> 'videogames', 'tags'=> $resume,'published' => true)
+//            );
+
+
+            $list = $daily->connection()->get("/me/videos?limit=1",
+                array('fields' => array('embed_url','id'))
             );
 
-            return $this->render('emission/index_daily.html.twig', ['list'=> $list]);
+//            dd($request);
+//            dd($list);
+//            dd($emission);
+
+            foreach ($list['list'] as $value=>$key){
+                $lien =  $key['embed_url'];
+                $idmedias = $key['id'];
+            }
+
+            $emission->setLien($lien);
+            $emission->setMedias($idmedias);
+//            dd($emission);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($emission);
+            $entityManager->flush();
+
+
+//            var_dump($result);
+
+
+            return $this->redirectToRoute('emission_index', ['list'=> $list]);
         }
+
+
+        return $this->render('emission/new.html.twig', ['form'=> $form->createView(), "text" => "encore rien envoyé"]);
+    }
+
+
 }
