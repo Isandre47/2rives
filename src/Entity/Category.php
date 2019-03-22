@@ -28,6 +28,11 @@ class Category
      */
     private $id_category;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $jour;
+
     public function __construct()
     {
         $this->id_category = new ArrayCollection();
@@ -77,6 +82,18 @@ class Category
                 $idCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJour(): ?string
+    {
+        return $this->jour;
+    }
+
+    public function setJour(string $jour): self
+    {
+        $this->jour = $jour;
 
         return $this;
     }

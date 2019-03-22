@@ -13,35 +13,47 @@
 
 
     <div class="container-fluid">
-        <h1>Hello all replay</h1>
+        <h1 class="text-primary m-5 pb-5"><b>Replay !!</b></h1>
+            <div class="row justify-content-around">
+                {% for cat in category %}
+                    {#<button>#}
+                        <h4>
+                            <a href="{{ path('replay_id', {'id':cat.id}) }}"><b class="text-primary text-capitalize">{{ cat.type }}</b></a>
+                        </h4>
+                    {#</button>#}
+                {% endfor %}
+            </div>
+            <div class="row justify-content-center pb-5">
+                <video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg"><source id="video_src"  type="video/mp4" />tet</video></h1>
+            </div>
         {#{{ dump(emission) }}#}
-        {{ dump(category) }}
-        {% for cat in category %}
-        <button><a href="{{ path('replay_id', {'id':cat.id}) }}">{{ cat.type }}</a></button>
-        {% endfor %}
-        {#{{ dump(emission.id_category) }}#}
-        <video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg"><source id="video_src"  type="video/mp4" /></video></h1>
+        {#{{ dump(category) }}#}
 
-        {#<div class="container-fluid">#}
+        {#{{ dump(emission.id_category) }}#}
+
+
+        <div class="container-fluid">
             {#{% for toto in category %}#}
             {#<div class="row" style="height: auto">#}
                 {#<div class="col-lg-12">#}
                     {#<h1>Catégorie : {{ toto.type }}</h1>#}
-                    <div class="row">
+                    <div class="row justify-content-around">
                         {% for prout in emission %}
+                            {#{{ dump(prout) }}#}
                             {#<h2> catégory {{ loop.index }}</h2>#}
                             {#{{ (prout.category.type) }} = {{ toto.type }} <br>#}
                             {#{% if prout.category.type == toto.type %}#}
                                 {#<h2>Trop génial</h2>#}
                                 <div class="card col-lg-2 m-1">
-                                    <iframe frameborder="0" width="720" height="270" src="{{ prout.lien }}?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>
-
+                                    {#<iframe frameborder="0" width="720" height="270" src="{{ prout.lien }}?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>#}
+                                    <img src="{{ prout.medias }}" alt="">
                                     {#<img class="card-img-top" src="https://via.placeholder.com/100px100/" alt="Card image cap">#}
-                                    <embed src="{{ prout.lien }}" type="" height="200px" width="200px">
+                                    {#<iframe width="560" height="315" src="https://www.youtube.com/embed/tABWsZBqS8k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}
+                                    {#<iframe width="200" height="250" src="https://www.youtube.com/embed/{{ prout.lien }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ prout.title }}, {{ loop.index }}</h5>
-                                        <p class="card-text">{{ prout.resume }}</p>
-                                        <a href="#" class="btn btn-primary"></a>
+                                        <h5 class="card-title">{{ prout.title }}</h5>
+                                        {#<p class="card-text">{{ prout.resume }}</p>#}
+                                        {#<a href="#" class="btn btn-primary"></a>#}
                                     </div>
                                 </div>
                             {#{% endif %}#}
@@ -50,13 +62,7 @@
                 {#</div>#}
             {#</div>#}
             {#{% endfor %}#}
-        {#</div>#}
+        </div>
 
-
-
-
-
-
-        This friendly message is coming from:
     </div>
 {% endblock %}

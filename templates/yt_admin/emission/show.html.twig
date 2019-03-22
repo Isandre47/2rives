@@ -1,0 +1,50 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Emission{% endblock %}
+
+{% block body %}
+    <h1>Emission</h1>
+    <div class="row">
+        <div class="col-10 offset-1">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ emission.id }}</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ emission.title }}</td>
+                </tr>
+                <tr>
+                    <th>Resume</th>
+                    <td>{{ emission.resume }}</td>
+                </tr>
+                <tr>
+                    <th>Médias</th>
+                    <td>
+                        <img src="{{ emission.medias }}" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Catégories</th>
+                    <td>{{ category }}</td>
+                </tr>
+                <tr>
+                    <th>Lien</th>
+                    <td>{{ emission.lien }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row justify-content-between">
+                <button><a href="{{ path('emission_index') }}">Revenir à la liste des émissions</a></button>
+                <button><a href="{{ path('emission_edit', {'id': emission.id}) }}">Edition de la fiche de l'émission</a></button>
+                <br>
+                {{ include('yt_admin/emission/_delete_form.html.twig') }}
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}

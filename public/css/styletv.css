@@ -1,15 +1,22 @@
 
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+
+}
+
 .h12{
     height: 450px;
 }
 
-nav { align-content: center;
+nav { align-content:center;
 
 }
 
 .titre{
-    color: blue;
+    color: #457BFB;
     padding-left: 2%;
+    font-weight: 900;
+    font-size: 240%;
 
 }
 
@@ -25,29 +32,12 @@ nav { align-content: center;
 
 
 
-/*.divCarousel{
-    max-height: 80%;
-}
-*/
-/*.carousel-item{
-    min-width:  20%;
-    max-width: 100%;
-    min-height: 20%;
-    max-height: 80%;
-}
-*/
 
-
-
-/*.d-block w-100{
-    width: ";
-    height:;
+.presentation{
+    padding-right: 2%;
+    padding-left: 2%;
 }
 
-.tailleCouressl{
-    width: ;
-    height: ;
-}*/
 
 
 .img-presentation {
@@ -97,7 +87,7 @@ nav { align-content: center;
 
 .reseaux-sociaux{
     color: white;
-    font-size: 20;
+    font-size: 20px;
 }
 
 
@@ -107,7 +97,11 @@ nav { align-content: center;
 }
 
 .footer{
-    height: 200px;
     background-color: #8B4D17;
 }
 
+.img-emission{
+    height: 15rem;
+    width: 15rem;
+
+}

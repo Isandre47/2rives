@@ -18,7 +18,7 @@ class UploadType extends AbstractType
     {
         $builder
 //            ->add('name')
-            ->add('file', FileType::class)
+            ->add('file', File::class)
         ;
     }
 
@@ -26,7 +26,8 @@ class UploadType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => File::class,
-            'action' => '/upload',
+//            'action' => '/yt/uploadpost',
+            'action' => '/yt/upload',
         ]);
     }
 }

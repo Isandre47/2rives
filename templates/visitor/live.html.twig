@@ -13,36 +13,62 @@
     </style>
 
     <div class="container">
-        <h1>Hello voici le live qui tue sa race</h1>
-        {#{{ dump(emission) }}#}
+        <h1 class="text-center m-5">Live 2Rives.tv</h1>
 
-        <div class="container-fluid">
-            <table class="table bg-info">
-                <th>
-                <td> Live</td>
-                {#<td> Emission</td>#}
-                </th>
-                <tbody>
-                <tr>
-                    <td>
-                        <iframe frameborder="0" width="720" height="270" src="https://www.dailymotion.com/embed/video/x3b68jn?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>
-                        <video  width="854" height="480" controls="controls" autobuffer="true" src="http://www.2rives.tv/Backoffice/destination/videos/files/cip%20s01e178%20je%20joue%20oui%20mais%20japprends%20achat.m4v">vidéo</video>
-                        {#<video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg"><source id="video_src"  type="video/mp4" /></video>#}
-
-                    </td>
-                </tr>
-                {#{% for toto in emission %}#}
-                    {#<tr>#}
-                        {#<td>{{ toto.title }}</td>#}
-                    {#</tr>#}
-                {#{% endfor %}#}
-                </tbody>
-            </table>
+        <div class="container-fluid m-5">
+            <div class="row justify-content-around">
+                <iframe frameborder="2" width="720" height="370" src="https://www.dailymotion.com/embed/video/x3b68jn?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>
+            </div>
         </div>
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a href="{{ 'D:/wamp64/www/php/2rives/src/Controller/VisitorController.php'|file_link(0) }}">src/Controller/VisitorController.php</a></code></li>
-            <li>Your template at <code><a href="{{ 'D:/wamp64/www/php/2rives/templates/visitor/index.html.twig'|file_link(0) }}">templates/visitor/index.html.twig</a></code></li>
-        </ul>
+
+        <div class="row mb-5">
+            <h2 class="titre"><b>DERNIERS REPLAYS</b></h2>
+
+            <br>
+            <br>
+
+            <!-- Card vidéos replay-->
+
+            <div class="card-deck">
+                <div class="card">
+                    <iframe width="auto" min height="315" max height="auto" src="https://www.youtube.com/embed/zPO1ME2UjiE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <iframe width="auto" min height="315" max height="auto" src="https://www.youtube.com/embed/4GF-8finZ68" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <iframe width="auto" min height="315" max height="auto"src="https://www.youtube.com/embed/ipVlwCwMnuw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="text-center mx-auto mt-5">
+                <button type="button" class="btn btn-outline-primary btn-lg"><a href="https://www.youtube.com/channel/UCpmx1aRBERfIuNFJPmGnFZQ/videos">Tous les Replays</a></button>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+
     </div>
 {% endblock %}

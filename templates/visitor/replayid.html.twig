@@ -6,73 +6,64 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/styletv.css">
-
-    <script language="JavaScript" type="text/javascript">
-        function changeVideo(newUrl) {
-            let video = document.getElementById("player");
-            video.src = newUrl;
-            video.load();
-            video.play();
-        }
-        console.log(changeVideo())
-    </script>
 {% endblock %}
 
 {% block body %}
 
 
-    <div class="container-fluid">
-        <h1>Hello  replay by id</h1>
+
+    <div class="container-fluid pb-5">
+        <h1 class="text-primary m-5 pb-5"><b>Replay</b></h1>
+        <div class="row justify-content-around">
+            {% for cat in category %}
+                {#<button>#}
+                <h4>
+                    <a href="{{ path('replay_id', {'id':cat.id}) }}"><b class="text-primary text-capitalize">{{ cat.type }}</b></a>
+                </h4>
+                {#</button>#}
+            {% endfor %}
+        </div>
+        <div class="row justify-content-center pb-5">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/EOv32-Yaq3U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {#<video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg"><source id="video_src"  type="video/mp4" />tet</video></h1>#}
+        </div>
         {#{{ dump(emission) }}#}
         {#{{ dump(category) }}#}
-        <ul class="nav justify-content-center">
-            {% for cat in category %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('replay_id', {'id':cat.id}) }}">{{ cat.type }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="row m-3" style="height: 460px">
-            <div class="col-lg-8 offset-lg-3">
-                <video id="player" width="854" height="480" controls="controls" autobuffer="true" poster="images/fond.jpeg">
-                    <source id="video_src"  type="video/mp4" />
-                </video>
-
-            </div>
-        </div>
 
         {#{{ dump(emission.id_category) }}#}
 
-        {#<div class="container-fluid">#}
-        {#{% for toto in category %}#}
-        {#<div class="row" style="height: auto">#}
-        {#<div class="col-lg-12">#}
-        {#<h1>Catégorie : {{ toto.type }}</h1>#}
-        <div class="row">
-            {% for prout in emission %}
-                {#<h2> catégory {{ loop.index }}</h2>#}
-                {#{{ (prout.category.type) }} = {{ toto.type }} <br>#}
-                {#{% if prout.category.type == toto.type %}#}
-                {#<h2>Trop génial</h2>#}
-                <div class="card col-lg-2 m-1">
-                    {#<img class="card-img-top" src="https://via.placeholder.com/100px100/" alt="Card image cap">#}
-                    <embed src="{{ prout.lien }}" type="" height="200px" width="200px">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ prout.title }}, {{ loop.index }}</h5>
-                        <p class="card-text">{{ prout.resume }}</p>
-                        <a href="#" class="btn btn-primary"></a>
-                        <a href="" onclick="javascript:changeVideo('{{ prout.lien }}');" rel="player" >
-                            <img src="{{ prout.lien }}>"class="borderImage slickHoverPicture" alt="Night"></a>
-                    </div>
-                </div>
-                {#{% endif %}#}
-            {% endfor %}
-        </div>
-        {#</div>#}
-        {#</div>#}
-        {#{% endfor %}#}
-        {#</div>#}
-        This friendly message is coming from:
-    </div>
 
+        <div class="container-fluid">
+            {#{% for toto in category %}#}
+            {#<div class="row" style="height: auto">#}
+            {#<div class="col-lg-12">#}
+            {#<h1>Catégorie : {{ toto.type }}</h1>#}
+            <div class="row justify-content-around">
+                {% for prout in emission %}
+                    {#<h2> catégory {{ loop.index }}</h2>#}
+                    {#{{ (prout.category.type) }} = {{ toto.type }} <br>#}
+                    {#{% if prout.category.type == toto.type %}#}
+                    {#<h2>Trop génial</h2>#}
+                    <div class="card col-lg-2 m-1">
+                        {#<iframe frameborder="0" width="720" height="270" src="{{ prout.lien }}?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>#}
+                        {#<iframe width="200" height="250" src="https://www.youtube.com/embed/{{ prout.lien }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}
+
+                        <a href="#"><img src="{{ prout.medias }}" alt=""></a>
+                        {#<img class="card-img-top" src="https://via.placeholder.com/100px100/" alt="Card image cap">#}
+                        {#<embed src="{{ prout.lien }}" type="" height="200px" width="250px">#}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ prout.title }}</h5>
+                            {#<p class="card-text">{{ prout.resume }}</p>#}
+                            {#<a href="#" class="btn btn-primary"></a>#}
+                        </div>
+                    </div>
+                    {#{% endif %}#}
+                {% endfor %}
+            </div>
+            {#</div>#}
+            {#</div>#}
+            {#{% endfor %}#}
+        </div>
+
+    </div>
 {% endblock %}

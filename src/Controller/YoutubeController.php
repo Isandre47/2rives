@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Emission;
-use App\Form\CategoryType;
-use App\Repository\CategoryRepository;
 use App\Services\Google;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +37,6 @@ class YoutubeController extends AbstractController
         $toto = $service->playlists->listPlaylists('snippet',array(
             'channelId' => 'UCpmx1aRBERfIuNFJPmGnFZQ',
             'maxResults' => 25))->getItems();
-
 //        Pour remplir la table catégorie avec les catégories des playlists
         $entityManager = $this->getDoctrine()->getManager();
         foreach ($toto as $item => $value) {
@@ -69,8 +66,8 @@ class YoutubeController extends AbstractController
     public function ytEmission(Session $session, Google $google)
     {
         $service = new \Google_Service_YouTube($google->session($session));
-        $toto = $service->playlistItems->listPlaylistItems('snippet,contentDetails',array(
-            'playlistId' => 'PLTWd_veB5ZqNcg9HX5efWQMUCpGsvBSwq',
+        $toto = $service->playlistItems->listPlaylistItems('snippet,contentDetails,status',array(
+            'playlistId' => 'PLTWd_veB5ZqNIX9LmWVrMAOpsKo1kZbQn',
             'maxResults' => 25))->getItems();
 //        dd($toto);
 //        Pour remplir la table catégorie avec les catégories des playlists
@@ -80,17 +77,24 @@ class YoutubeController extends AbstractController
             $prout = $value['snippet'];
             $caca = $value['contentDetails'];
             $prout['title'];
-//            dd($value);
             $caca['videoId'];
-            echo 'Titre:' . $prout['title']. '.....video id :'.$caca['videoId']. "<hr>";
-            $emission->setTitle($prout['title']);
-            $emission->setResume($prout['description']);
-            $emission->setLien($caca['videoId']);
+            $thumb = $prout['thumbnails'];
+            $toto = $thumb['medium'];
+            $status = $value['status'];
+            var_dump($status['privacyStatus']);
+//            dd($toto);
+            if ($status['privacyStatus'] == 'public'){
+                echo 'Titre:' . $prout['title']. '.....video id :'.$caca['videoId']. $status['privacyStatus']. "<hr>";
+                $emission->setTitle($prout['title']);
+                $emission->setResume($prout['description']);
+                $emission->setLien($caca['videoId']);
+                $emission->setMedias($toto['url']);
 //            $category->getIdCategory();
-            var_dump($emission);
+//            var_dump($toto);
 //            dd($emission);
-            $entityManager->persist($emission);
-            $entityManager->flush();
+                $entityManager->persist($emission);
+                $entityManager->flush();
+            }
         }
         dd('fini');
         return $this->render('visitor/yt_replay.html.twig', [
@@ -140,4 +144,49 @@ class YoutubeController extends AbstractController
             return $this->redirectToRoute('youtube');
         }
     }
+
+
+    /**
+     * @Route("youtube/tokenAdmin", name="yt_token")
+     */
+    public function getClientAdmin(Session $session): Response
+    {
+        $client = new \Google_Client();
+        $client->setAuthConfig('../config/client_secret.json');
+        $client->setAccessType('offline');
+//        $client->setIncludeGrantedScopes(true);
+        $client->addScope(\Google_Service_YouTube::YOUTUBE);
+        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/code');
+        $auth_url = $client->createAuthUrl();
+        return $this->redirect(filter_var($auth_url, FILTER_SANITIZE_URL));
+    }
+
+
+    /**
+     * @Route("youtube/code", name="yt_code")
+     */
+    public function getCodeAdmin(Session $session): Response
+    {
+        $session->start();
+        $client = new \Google_Client();
+        $client->setAuthConfig('../config/client_secret.json');
+        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/code');
+        $client->addScope(\Google_Service_YouTube::YOUTUBE);
+
+        if (! isset($_GET['code'])) {
+            $auth_url = $client->createAuthUrl();
+            var_dump($_GET);
+            dd('code vide');
+            return $this->redirect(filter_var($auth_url, FILTER_SANITIZE_URL));
+        } else {
+            $client->fetchAccessTokenWithAuthCode($_GET['code']);
+//            var_dump($client);
+            $token = $client->getAccessToken();
+            $session->set('admin_token', $token);
+//            return $this->render('youtube/index.html.twig', ['session' => $client, 'token'=> $token]);
+            return $this->redirectToRoute('youtube');
+        }
+    }
+
+
 }

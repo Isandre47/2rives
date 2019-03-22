@@ -25,7 +25,7 @@ class Daily extends AbstractController
             array(),
             array(
                 'username' => $_ENV['username'],
-                'password' => $_ENV['password']
+                'password' => 'Da$on69006'
             )
         );
     }

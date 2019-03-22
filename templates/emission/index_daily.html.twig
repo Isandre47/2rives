@@ -28,7 +28,7 @@
                 <td>{{ emission.owner }}</td>
                 {#<td>{{ emission.category.type }}</td>#}
                 <td>
-                    <embed src="{{ emission.embed_url }}" type="" height="150px" width="150px">
+                    <img src="{{ emission.medias }}" alt="">
                 </td>
                 <td>
                     {% for tag in emission.tag %}

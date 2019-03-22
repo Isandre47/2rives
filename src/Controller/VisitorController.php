@@ -40,6 +40,14 @@ class VisitorController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/oldreplay", name="old_replay")
+     */
+    public function oldReplay():  Response
+    {
+        return $this->render('visitor/oldreplay.html.twig');
+    }
+
 
     /**
      * @Route("/replay/{id}", name="replay_id")
@@ -57,7 +65,6 @@ class VisitorController extends AbstractController
     }
 
 
-
     /**
      * @Route("/live", name="live")
      */
@@ -67,6 +74,26 @@ class VisitorController extends AbstractController
         return $this->render('visitor/live.html.twig', [
             'controller_name' => 'VisitorController',
             'emission' => $live,
+        ]);
+    }
+
+    /**
+     * @Route("/programme", name="programme")
+     */
+    public function indexProgramme(CategoryRepository $categoryRepository):  Response
+    {
+        return $this->render('visitor/programme.html.twig', [
+            'category'=> $categoryRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/programme/{id}", name="jour")
+     */
+    public function indexJour(CategoryRepository $categoryRepository):  Response
+    {
+        return $this->render('visitor/programme.html.twig', [
+            'category'=> $categoryRepository->findAll(),
         ]);
     }
 }

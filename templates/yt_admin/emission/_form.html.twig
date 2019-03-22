@@ -1,0 +1,25 @@
+{#{{ form_start(form) }}#}
+    {#{{ form_widget(form) }}#}
+    {#<button class="btn">{{ button_label|default('Save') }}</button>#}
+{#{{ form_end(form) }}#}
+
+{#<hr>#}
+{#<h2>form 2</h2>#}
+{#{{ form_start(form2) }}#}
+    {#{{ form_widget(form2) }}#}
+    {#<button class="btn">{{ button_label|default('Save 2') }}</button>#}
+{#<input type="submit" value="Upload" id="toto-button" />#}
+{#{{ form_end(form2) }}#}
+
+{#<hr>#}
+
+-------------------------------
+
+<h2>form 3</h2>
+<form>
+    {{ form_widget(form2) }}
+    {{ form_row(form2.file) }}
+    {{ form_widget(form2.file) }}
+    <input type="submit" value="Upload" id="toto-button" />
+    {{ form_end(form2) }}
+</form>

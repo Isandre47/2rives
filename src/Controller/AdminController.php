@@ -30,4 +30,25 @@ class AdminController extends AbstractController
             'user' => $userRepository->findAll()
         ]);
     }
+
+    /**
+     * @Route("/oldbo", name="oldbo")
+     */
+    public function oldBo()
+    {
+        $curl = curl_init('http://www.2rives.tv/Backoffice/destination/videos/');
+//        $fp = fopen('index.php', 'w');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $toto = curl_exec($curl);
+        $toto = json_decode($toto);
+//        dd($toto);
+        foreach ( $toto as $value => $key)
+        {
+            echo ($key['0']->name);
+        }
+//        var_dump($fp);
+
+        dd($toto);
+        return $this->render('oldbo.html.twig');
+    }
 }
