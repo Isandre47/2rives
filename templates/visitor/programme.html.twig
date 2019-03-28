@@ -11,24 +11,25 @@
 <div class="container-fluid">
     <h1 class="text-primary m-5 pb-5"><b>Replay</b></h1>
     <div class="row justify-content-around border border-top-0 border-primary">
-        {% for cat in category %}
+        {#{% for cat in category %}#}
             {#<button>#}
-            <h2>
-                {#<a href="{{ path('replay_id', {'id':cat.id}) }}"><b class="text-primary text-capitalize"></b></a>#}
-                <li class="nav-item dropdown list-unstyled">
-                    <a class="nav-link dropdown-toggle text-primary text-capitalize" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <b>{{ cat.jour }}</b>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#matin">Matin</a>
-                        <a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#midi">Après midi</a>
-                        <a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#soir">Soir</a>
-                    </div>
-                </li>
-            </h2>
+            {#<h2>#}
+                {#<li class="nav-item dropdown list-unstyled">#}
+                    {#<a class="nav-link dropdown-toggle text-primary text-capitalize" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+                        {#<b>{{ cat.jour }}</b>#}
+                    {#</a>#}
+                    {#<div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+                        {#<a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#matin">Matin</a>#}
+                        {#<a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#midi">Après midi</a>#}
+                        {#<a class="dropdown-item" href="{{ path('jour', {'id':cat.id}) }}#soir">Soir</a>#}
+                    {#</div>#}
+                {#</li>#}
+            {#</h2>#}
             {#</button>#}
-        {% endfor %}
-    </div>
+        {#{% endfor %}#}
+    {#</div>#}
+    {% include 'visitor/navbarprogramme.html.twig' %}
+
     <div class="container-fluid">
         <div>
             <h1 id="matin" class="text-primary text-uppercase m-5"><b>Matin</b></h1>

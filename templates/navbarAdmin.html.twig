@@ -10,17 +10,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('emission_index') }}">Gérer les émissions</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    YT
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ path('yt_admin') }}">YT Admin</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
+            {#<li class="nav-item dropdown">#}
+                {#<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+                    {#YT#}
+                {#</a>#}
+                {#<div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+                    {#<a class="dropdown-item" href="{{ path('yt_admin') }}">YT Admin</a>#}
+                    {#<a class="dropdown-item" href="#">Another action</a>#}
+                    {#<div class="dropdown-divider"></div>#}
+                    {#<a class="dropdown-item" href="#">Something else here</a>#}
+                {#</div>#}
+            {#</li>#}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('user_index') }}">Gérer les utilisateurs</a>
             </li>
@@ -28,13 +28,7 @@
                 <a class="nav-link" href="{{ path('category_index') }}">Gérer les catégories</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('show_daily') }}">Voir les vidéos daily</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('add_daily') }}">Ajouter les vidéos daily</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('ajout_d') }}">test_fusion</a>
+                <a class="nav-link" href="{{ path('upload') }}">Upload</a>
             </li>
         </ul>
     </div>

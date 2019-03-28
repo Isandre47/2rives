@@ -6,9 +6,11 @@ use App\Entity\Emission;
 use App\Form\EmissionType;
 use App\Repository\EmissionRepository;
 use App\Services\Daily;
+use App\Services\Google;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -33,22 +35,59 @@ class EmissionController extends AbstractController
     /**
      * @Route("/new", name="emission_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Session $session, Google $google): Response
     {
         $emission = new Emission();
         $form = $this->createForm(EmissionType::class, $emission);
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-//            dd($_FILES);
-//            $file = $emission->getMedias();
+        if ($request->isMethod('POST')) {
+            $lien = $request->request->get('emission');
+//            var_dump($emission, $lien['lien']);
+            $toto = $emission->setLien($lien['lien']);
+
+            $service = new \Google_Service_YouTube($google->sessionRead($session));
+            $client = $service->videos->listVideos('snippet,status',array(
+                'id' => $lien['lien']
+            ));
+//            dd($request);
+//            dd($client);
+//        Pour remplir la table catégorie avec les catégories des playlists
+            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($client as $item => $value) {
+//                $emission =  new Emission();
+                $prout = $value['snippet'];
+                $thumb = $prout['thumbnails'];
+                $pipi = $thumb['medium'];
+//            $prout['title'];
+
+                $status = $value['status'];
+//            var_dump($status['privacyStatus']);
+                var_dump($client);
+                if ($status['privacyStatus'] == 'public'){
+                    echo 'Titre:' . $prout['title']. '.....status:'. $status['privacyStatus']. "<hr>";
+//                    $emission->setTitle($prout['title']);
+//                    $emission->setResume($prout['description']);
+//                    $emission->setLien($caca['videoId']);
+                    $emission->setMedias($pipi['url']);
+//            $category->getIdCategory();
+//            var_dump($toto);
+//                    dd($emission);
+                    $entityManager->persist($emission);
+                    $entityManager->flush();
+                }
+            }
+            dd('fini');
+
+            dd($emission);
 //            $fileName = md5(uniqid()).'.'.$file->guessExtension();
 //            $file->move($this->getParameter('upload_medias_directory'), $fileName);
 //            $emission->setMedias($fileName);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($emission);
-            $entityManager->flush();
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->persist($emission);
+//            $entityManager->flush();
 
             return $this->redirectToRoute('emission_index');
         }
@@ -59,10 +98,6 @@ class EmissionController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @Route("/add", name="ajout_d", methods={"GET|POST"})
-     */
     public function addDaily(Request $request, Daily $daily): Response
     {
         $emission = new Emission();
@@ -196,7 +231,7 @@ class EmissionController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$emission->getId(), $request->request->get('_token'))) {
 //            dd($emission);
-            $daily->connection()->delete('/video/'. $emission->getMedias());
+//            $daily->connection()->delete('/video/'. $emission->getMedias());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($emission);
             $entityManager->flush();

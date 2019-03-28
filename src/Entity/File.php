@@ -32,8 +32,7 @@ class File
      * @Assert\NotBlank(message="File should not be blank.")
      * @Assert\File(
      *     mimeTypes={"image/jpeg", "image/png", "image/gif", "application/x-gzip", "application/zip"},
-     *     maxSize="8000k"
-     * )
+     *     maxSize="8000k")
      *
      * @var UploadedFile
      */

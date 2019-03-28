@@ -3,14 +3,14 @@
 {% block title %}Edit Emission{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container text-center">
         <h1>Editer une émission</h1>
         <div class="row">
             <div class="col-10 offset-1">
-                {{ include('emission/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+                {{ include('emission/_form.html.twig') }}
             </div>
         </div>
-        <div class="row justify-content-around">
+        <div class="row justify-content-between">
 
             <button ><a href="{{ path('emission_index') }}">Retour à la liste</a></button>
 

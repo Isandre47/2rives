@@ -3,15 +3,15 @@
 {% block title %}Emission index{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Gérer les émissions</h1>
+    <div class="container-fluid">
+        <h1>Gérer les émissions !</h1>
         <br>
 
-        <button><a href="{{ path('ajout_d') }}">Ajouter une émission</a></button>
+        <button><a href="{{ path('emission_new') }}">Ajouter une émission</a></button>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Id</th>
+                {#<th>Id</th>#}
                 <th>Titre</th>
                 <th>Resume</th>
                 <th>Catégorie</th>
@@ -26,7 +26,7 @@
             {#{{ dump(list) }}#}
             {% for emission in emissions %}
                 <tr>
-                    <td>{{ emission.medias }}</td>
+                    {#<td>{{ emission.medias }}</td>#}
                     <td>{{ emission.title }}</td>
                     <td>{{ emission.resume }}</td>
                     <td>{{ emission.category.type }}</td>

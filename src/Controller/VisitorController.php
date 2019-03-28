@@ -77,23 +77,4 @@ class VisitorController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/programme", name="programme")
-     */
-    public function indexProgramme(CategoryRepository $categoryRepository):  Response
-    {
-        return $this->render('visitor/programme.html.twig', [
-            'category'=> $categoryRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route("/programme/{id}", name="jour")
-     */
-    public function indexJour(CategoryRepository $categoryRepository):  Response
-    {
-        return $this->render('visitor/programme.html.twig', [
-            'category'=> $categoryRepository->findAll(),
-        ]);
-    }
 }

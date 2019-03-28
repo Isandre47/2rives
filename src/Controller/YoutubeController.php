@@ -65,7 +65,7 @@ class YoutubeController extends AbstractController
      */
     public function ytEmission(Session $session, Google $google)
     {
-        $service = new \Google_Service_YouTube($google->session($session));
+        $service = new \Google_Service_YouTube($google->sessionAdmin($session));
         $toto = $service->playlistItems->listPlaylistItems('snippet,contentDetails,status',array(
             'playlistId' => 'PLTWd_veB5ZqNIX9LmWVrMAOpsKo1kZbQn',
             'maxResults' => 25))->getItems();
@@ -81,7 +81,7 @@ class YoutubeController extends AbstractController
             $thumb = $prout['thumbnails'];
             $toto = $thumb['medium'];
             $status = $value['status'];
-            var_dump($status['privacyStatus']);
+//            var_dump($status['privacyStatus']);
 //            dd($toto);
             if ($status['privacyStatus'] == 'public'){
                 echo 'Titre:' . $prout['title']. '.....video id :'.$caca['videoId']. $status['privacyStatus']. "<hr>";
@@ -92,11 +92,12 @@ class YoutubeController extends AbstractController
 //            $category->getIdCategory();
 //            var_dump($toto);
 //            dd($emission);
-                $entityManager->persist($emission);
-                $entityManager->flush();
+//                $entityManager->persist($emission);
+//                $entityManager->flush();
             }
         }
-        dd('fini');
+//        var_dump($session);
+        dd($session);
         return $this->render('visitor/yt_replay.html.twig', [
 //            'controller_name' => 'YoutubeController',
             'session' => $session,
@@ -147,7 +148,7 @@ class YoutubeController extends AbstractController
 
 
     /**
-     * @Route("youtube/tokenAdmin", name="yt_token")
+     * @Route("youtube/tokenAdmin", name="yt_tokenAdmin")
      */
     public function getClientAdmin(Session $session): Response
     {
@@ -156,21 +157,21 @@ class YoutubeController extends AbstractController
         $client->setAccessType('offline');
 //        $client->setIncludeGrantedScopes(true);
         $client->addScope(\Google_Service_YouTube::YOUTUBE);
-        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/code');
+        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/codeAdmin');
         $auth_url = $client->createAuthUrl();
         return $this->redirect(filter_var($auth_url, FILTER_SANITIZE_URL));
     }
 
 
     /**
-     * @Route("youtube/code", name="yt_code")
+     * @Route("youtube/codeAdmin", name="yt_codeAdmin")
      */
     public function getCodeAdmin(Session $session): Response
     {
         $session->start();
         $client = new \Google_Client();
         $client->setAuthConfig('../config/client_secret.json');
-        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/code');
+        $client->setRedirectUri('http://'. $_SERVER['HTTP_HOST'] .'/youtube/codeAdmin');
         $client->addScope(\Google_Service_YouTube::YOUTUBE);
 
         if (! isset($_GET['code'])) {
@@ -183,10 +184,10 @@ class YoutubeController extends AbstractController
 //            var_dump($client);
             $token = $client->getAccessToken();
             $session->set('admin_token', $token);
+//            dd($session);
 //            return $this->render('youtube/index.html.twig', ['session' => $client, 'token'=> $token]);
             return $this->redirectToRoute('youtube');
         }
     }
-
 
 }

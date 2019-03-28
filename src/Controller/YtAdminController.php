@@ -2,37 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Emission;
 use App\Form\EmissionType;
-use App\Form\UploadType;
-use App\Repository\CategoryRepository;
-use App\Repository\EmissionRepository;
 use App\Services\Google;
+use function Sodium\add;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class YtAdminController extends AbstractController
 {
-    /**
-     * @Route("/yt/admin", name="yt_admin")
-     */
-    public function index(EmissionRepository $emissionRepository, CategoryRepository $categoryRepository)
-    {
-        $emmission = $emissionRepository->allWithCategory();
-        $category = $categoryRepository->allWithEmission();
-
-        return $this->render('yt_admin/index.html.twig', [
-            'controller_name' => 'YtAdminController',
-            'emissions' => $emmission,
-            'category' => $category,
-        ]);
-    }
 
     /**
      * @Route("/yt/upload", name="yt_upload", methods={"GET|POST"})
@@ -120,12 +108,49 @@ class YtAdminController extends AbstractController
     }
 
     /**
-     * @Route("/yt/js", name="yt_uploadpost")
+     * @Route("/yt/up", name="upload", methods={"GET|POST"})
      */
     public function uploadPost(Request $request, Session $session)
     {
-        return $this->render('yt_admin/emission/uploadjs.html.twig', ['session' => $session]);
+        $toto = $session->get('admin_token');
 
+        $form = $this->createFormBuilder()
+            ->add('category', EntityType::class, [
+                'class'=> Category::class,
+                'choice_label'=> 'type',
+                'attr' => [
+                    'class' => 'form-control m-4',
+                    'placeholder' => "prout"
+                ],
+                'label' => 'prout'
+            ])->getForm();
+
+        if ($request->isMethod('POST')){
+            $emission =  new Emission();
+
+            $emission->setTitle($request->request->get('title'));
+            $emission->setResume($request->request->get('description'));
+            $emission->setLien('sans');
+            $emission->setCategory('sans');
+//            $emission->setTitle($request->request->get('title'));
+
+//                $emission->setTitle($prout['title']);
+//                $emission->setResume($prout['description']);
+//                $emission->setLien($caca['videoId']);
+//                $emission->setMedias($toto['url']);
+                var_dump($request->request->all());
+                var_dump($emission);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($emission);
+                $em->flush();
+                dd('toto');
+
+        }
+        return $this->render('yt_admin/emission/uploadjs.html.twig', [
+            'session' => $toto['access_token'],
+            'form' => $form->createView()
+        ]);
     }
 
 }

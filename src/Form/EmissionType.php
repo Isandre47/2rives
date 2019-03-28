@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Controller\DailyController;
 use App\Entity\Category;
 use App\Entity\Emission;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,32 +26,35 @@ class EmissionType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control m-4',
                     'placeholder' => "Titre"
                 ],
                 'label' => 'Titre'
             ])
             ->add('resume', TextareaType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control m-4',
                     'placeholder' => "Résumé"
                 ],
                 'label' => 'Résumé'
             ])
 
-            ->add('lien', FileType::class, [
-                'data_class' => null,
+            ->add('lien', EntityType::class, [
+                'class' => Emission::class,
+                'choice_label'=> 'title',
+                'choice_value' => 'lien',
+                'mapped' => false,
                 'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Lien"
+                    'class' => 'form-control m-4',
+                    'placeholder' => "prout"
                 ],
-                'label' => 'Lien'
+                'label' => 'Vidéo'
             ])
             ->add('category', EntityType::class, [
                 'class'=> Category::class,
                 'choice_label'=> 'type',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control m-4',
                     'placeholder' => "prout"
                 ],
                 'label' => 'prout'
