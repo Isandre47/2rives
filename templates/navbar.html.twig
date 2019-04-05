@@ -1,7 +1,7 @@
 <!--Navbar-->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top ">
-    <a class="navbar-brand" href="#"><img  class="img-2Rives" src="../images/logo-2rives-blanc.png" alt="logo 2 Rives TV"></a>
+    <a class="navbar-brand" href="{{ path('visitor') }}"><img  class="img-2Rives" src="../images/logo-2rives-blanc.png" alt="logo 2 Rives TV"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,9 +12,6 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('replay_all') }}">Replay</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('yt_emission') }}">Replay YT</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('programme') }}">Programme</a>

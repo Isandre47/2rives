@@ -1,0 +1,107 @@
+
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+
+}
+
+.h12{
+    height: 450px;
+}
+
+nav { align-content:center;
+
+}
+
+.titre{
+    color: #457BFB;
+    padding-left: 2%;
+    font-weight: 900;
+    font-size: 240%;
+
+}
+
+.navbar-brand{
+    height: 100%;
+    width: 3%;
+}
+
+.img-2Rives {
+    height: 2rem;
+    width: 2rem;
+}
+
+
+
+
+.presentation{
+    padding-right: 2%;
+    padding-left: 2%;
+}
+
+
+
+.img-presentation {
+    width: 100%;
+    height: 100%;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 3%;
+    margin-top: 2%;
+    padding-bottom: 1%;
+}
+
+.paragraphe1{
+    padding-top: 2%;
+    padding-right: 2%;
+    padding-left:0%;
+    text-align: justify;
+}
+
+
+.img-presentation2 {
+    width: 100%;
+    height: 100%;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 3%;
+    margin-top: 2%;
+    padding-bottom: 1%;
+}
+
+.paragraphe2{
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 0%;
+    padding-bottom: 2%;
+    text-align: justify;
+}
+
+
+.card-deck{
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+
+.reseaux-sociaux{
+    color: white;
+    font-size: 20px;
+}
+
+
+.img-twitter{
+    height: 3rem;
+    width: 3rem;
+}
+
+.footer{
+    background-color: #8B4D17;
+}
+
+.img-emission{
+    height: 15rem;
+    width: 15rem;
+
+}

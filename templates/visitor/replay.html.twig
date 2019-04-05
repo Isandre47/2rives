@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Replay !{% endblock %}
+{% block title %}Tous les replay !{% endblock %}
 
 
 {% block stylesheets %}
@@ -9,8 +9,6 @@
 {% endblock %}
 
 {% block body %}
-
-
 
     <div class="container-fluid">
         <h1 class="text-primary m-5 pb-5"><b>Replay !!</b></h1>
@@ -31,7 +29,6 @@
 
         {#{{ dump(emission.id_category) }}#}
 
-
         <div class="container-fluid">
             {#{% for toto in category %}#}
             {#<div class="row" style="height: auto">#}
@@ -44,9 +41,11 @@
                             {#{{ (prout.category.type) }} = {{ toto.type }} <br>#}
                             {#{% if prout.category.type == toto.type %}#}
                                 {#<h2>Trop génial</h2>#}
-                                <div class="card col-lg-2 m-1">
+                                <div class="card col-lg-3 m-1">
                                     {#<iframe frameborder="0" width="720" height="270" src="{{ prout.lien }}?autoPlay=1" allowfullscreen="" allow="autoplay"></iframe>#}
-                                    <img src="{{ prout.medias }}" alt="">
+                                    <div class="m-auto">
+                                        <a href="https://www.youtube.com/embed/{{ prout.lien }}"><img class="responsive" src="{{ prout.medias }}" alt=""></a>
+                                    </div>
                                     {#<img class="card-img-top" src="https://via.placeholder.com/100px100/" alt="Card image cap">#}
                                     {#<iframe width="560" height="315" src="https://www.youtube.com/embed/tABWsZBqS8k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}
                                     {#<iframe width="200" height="250" src="https://www.youtube.com/embed/{{ prout.lien }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}

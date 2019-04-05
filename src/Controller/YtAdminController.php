@@ -6,7 +6,6 @@ use App\Entity\Category;
 use App\Entity\Emission;
 use App\Form\EmissionType;
 use App\Services\Google;
-use function Sodium\add;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -113,43 +112,50 @@ class YtAdminController extends AbstractController
     public function uploadPost(Request $request, Session $session)
     {
         $toto = $session->get('admin_token');
+        $emission =  new Emission();
+//        $form = $this->createFormBuilder($emission)
+//            ->add('category', EntityType::class, [
+//                'class'=> Category::class,
+//                'choice_label'=> 'type',
+//                'attr' => [
+//                    'class' => 'form-control',
+//                    'placeholder' => "catégoerie"
+//                ],
+//                'label' => 'Catégorie'
+//            ])
+//            ->setAction('/yt/up')
+//            ->setMethod('POST')
+//            ->getForm();
 
-        $form = $this->createFormBuilder()
-            ->add('category', EntityType::class, [
-                'class'=> Category::class,
-                'choice_label'=> 'type',
-                'attr' => [
-                    'class' => 'form-control m-4',
-                    'placeholder' => "prout"
-                ],
-                'label' => 'prout'
-            ])->getForm();
+//        $form->handleRequest($request);
 
         if ($request->isMethod('POST')){
-            $emission =  new Emission();
+
 
             $emission->setTitle($request->request->get('title'));
             $emission->setResume($request->request->get('description'));
             $emission->setLien('sans');
-            $emission->setCategory('sans');
-//            $emission->setTitle($request->request->get('title'));
-
-//                $emission->setTitle($prout['title']);
-//                $emission->setResume($prout['description']);
-//                $emission->setLien($caca['videoId']);
-//                $emission->setMedias($toto['url']);
-                var_dump($request->request->all());
-                var_dump($emission);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($emission);
-                $em->flush();
+////            $emission->setCategory('sans');
+////            $emission->setTitle($request->request->get('title'));
+//
+////                $emission->setTitle($prout['title']);
+////                $emission->setResume($prout['description']);
+////                $emission->setLien($caca['videoId']);
+////                $emission->setMedias($toto['url']);
+//                var_dump($request->request->all());
+//                var_dump($request->request->get('form'));
+////                $emission->setCategory();
+//                var_dump($emission);
+//
+////                $em = $this->getDoctrine()->getManager();
+////                $em->persist($emission);
+////                $em->flush();
                 dd('toto');
 
         }
         return $this->render('yt_admin/emission/uploadjs.html.twig', [
             'session' => $toto['access_token'],
-            'form' => $form->createView()
+//            'form' => $form->createView()
         ]);
     }
 

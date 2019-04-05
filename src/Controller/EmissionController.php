@@ -240,4 +240,16 @@ class EmissionController extends AbstractController
 
         return $this->redirectToRoute('emission_index');
     }
+
+    /**
+     * @Route("/edit/sync", name="sync")
+     */
+    public function sync(EmissionRepository $emissionRepository)
+    {
+        $emission = $emissionRepository->findAll();
+//        dd('sync');
+        return $this->render('sync.html.twig',[
+            'emission' => $emission
+        ]);
+    }
 }

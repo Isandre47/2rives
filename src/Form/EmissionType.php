@@ -57,7 +57,7 @@ class EmissionType extends AbstractType
                     'class' => 'form-control m-4',
                     'placeholder' => "prout"
                 ],
-                'label' => 'prout'
+                'label' => 'Catégorie'
             ])
         ;
     }
